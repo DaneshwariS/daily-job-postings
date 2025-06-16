@@ -1,0 +1,28 @@
+name: Run LinkedIn Job Fetch Twice Daily
+
+on:
+  schedule:
+    - cron: '30 3 * * *'   # 9:00 AM IST (03:30 UTC)
+    - cron: '30 6 * * *'   # 12:00 PM IST (06:30 UTC)
+  workflow_dispatch:
+
+jobs:
+  run-job-fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run LinkedIn job fetch script
+      run: |
+        python rss.py
