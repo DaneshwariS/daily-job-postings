@@ -26,3 +26,6 @@ jobs:
     - name: Run LinkedIn job fetch script
       run: |
         python rss.py
+      env:
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
