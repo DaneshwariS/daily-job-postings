@@ -16,7 +16,8 @@ load_dotenv()
 # ------------------------------
 # Step 1: Define RSS Feed URL
 # ------------------------------
-rss_url = "https://news.google.com/rss/search?q=Data+Scientist+1-2+years+Bangalore+site:linkedin.com/jobs"
+rss_url = "https://news.google.com/rss/search?q=Data+Scientist+OR+AI+Engineer+OR+Machine+Learning+OR+AIML+0-2+years+Bangalore+site:linkedin.com/jobs"
+
 feed = feedparser.parse(rss_url)
 
 # ------------------------------
@@ -39,7 +40,17 @@ for entry in feed.entries:
 # ------------------------------
 df = pd.DataFrame(job_list)
 output_file = f"LinkedIn_DataScientist_Jobs_Bangalore_{india_time.strftime('%Y-%m-%d')}.xlsx"
-df.to_excel(output_file, index=False)
+with pd.ExcelWriter(output_file, engine='xlsxwriter') as writer:
+    df.to_excel(writer, index=False, sheet_name='Jobs')
+    workbook = writer.book
+    worksheet = writer.sheets['Jobs']
+    
+    # Apply hyperlink format to the "Link" column
+    hyperlink_format = workbook.add_format({'font_color': 'blue', 'underline': 1})
+    
+    for row_num, link in enumerate(df['Link'], start=1):  # Start at 1 to skip header
+        worksheet.write_url(row_num, 1, link, hyperlink_format, string=link)
+
 
 print(f"✅ Saved {len(df)} job(s) posted today ({today_str}) to '{output_file}'")
 
