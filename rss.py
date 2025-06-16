@@ -10,6 +10,8 @@ import pytz
 import os
 import smtplib
 from email.message import EmailMessage
+from dotenv import load_dotenv
+load_dotenv()
 
 # ------------------------------
 # Step 1: Define RSS Feed URL
@@ -72,6 +74,8 @@ def send_email_with_attachment(subject, body, to_email, attachment_path):
 send_email_with_attachment(
     subject="📋 Your Daily LinkedIn Job Feed (Bangalore – 1–2 YOE)",
     body="Hi,\n\nAttached is your daily LinkedIn job listing for Data Scientist roles (1-2 years experience) in Bangalore.\n\nRegards,\nGitHub Bot 🤖",
-    to_email="your_email@gmail.com",   # 🔁 REPLACE with your actual email
+    to_email = ["shreedhar212002@gmail.com", "daneshwariwork2024@gmail.com"],
+
+       
     attachment_path=output_file
 )
